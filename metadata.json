@@ -1,0 +1,5 @@
+{
+  "name": "CosFop-Learn",
+  "description": "Plateforme éducative complète pour cours en direct et VOD avec paiements locaux.",
+  "requestFramePermissions": ["camera", "microphone"]
+}
