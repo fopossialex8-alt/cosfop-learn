@@ -1,5 +1,5 @@
-import React from 'react';
-import { motion } from 'motion/react';
+import React, { useState } from 'react';
+import { motion, AnimatePresence } from 'motion/react';
 import { 
   Play, 
   BookOpen, 
@@ -13,11 +13,15 @@ import {
   ShieldCheck,
   Video,
   Globe
+  ,
+  Menu,
+  X
 } from 'lucide-react';
 import { Button, Card } from '../components/UI';
 import { View } from '../types';
 
 export const Landing = ({ setView }: { setView: (view: View) => void }) => {
+  const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
   return (
     <div className="min-h-screen bg-white">
       {/* Navbar */}
@@ -41,12 +45,40 @@ export const Landing = ({ setView }: { setView: (view: View) => void }) => {
             <Button size="sm" onClick={() => setView('signup')} className="font-bold uppercase tracking-wider px-6">S'inscrire</Button>
           </div>
         </div>
-        <button className="lg:hidden p-2 text-ink">
-          <div className="w-6 h-0.5 bg-ink mb-1.5"></div>
-          <div className="w-6 h-0.5 bg-ink mb-1.5"></div>
-          <div className="w-4 h-0.5 bg-ink"></div>
+        <button onClick={() => setIsMobileMenuOpen(!isMobileMenuOpen)} className="lg:hidden p-2 text-ink" aria-label="Menu">
+          {isMobileMenuOpen ? <X className="w-6 h-6" /> : <Menu className="w-6 h-6" />}
         </button>
       </nav>
+
+      <AnimatePresence>
+        {isMobileMenuOpen && (
+          <motion.div
+            initial={{ opacity: 0 }}
+            animate={{ opacity: 1 }}
+            exit={{ opacity: 0 }}
+            className="fixed inset-0 z-50 lg:hidden"
+          >
+            <div className="absolute inset-0 bg-black/30" onClick={() => setIsMobileMenuOpen(false)}></div>
+            <motion.div
+              initial={{ y: -20, opacity: 0 }}
+              animate={{ y: 0, opacity: 1 }}
+              exit={{ y: -20, opacity: 0 }}
+              className="absolute top-16 left-0 right-0 bg-white border-b border-ink/5 p-6"
+            >
+              <div className="flex flex-col gap-4">
+                <a href="#features" onClick={() => setIsMobileMenuOpen(false)} className="text-sm font-bold text-ink uppercase tracking-wider">Avantages</a>
+                <a href="#courses" onClick={() => setIsMobileMenuOpen(false)} className="text-sm font-bold text-ink uppercase tracking-wider">Cours</a>
+                <a href="#pricing" onClick={() => setIsMobileMenuOpen(false)} className="text-sm font-bold text-ink uppercase tracking-wider">Tarifs</a>
+                <div className="h-1" />
+                <div className="flex items-center gap-3">
+                  <Button variant="ghost" size="sm" onClick={() => { setView('login'); setIsMobileMenuOpen(false); }} className="font-bold uppercase tracking-wider">Connexion</Button>
+                  <Button size="sm" onClick={() => { setView('signup'); setIsMobileMenuOpen(false); }} className="font-bold uppercase tracking-wider px-6">S'inscrire</Button>
+                </div>
+              </div>
+            </motion.div>
+          </motion.div>
+        )}
+      </AnimatePresence>
 
       {/* 1. Hero Section */}
       <section className="relative overflow-hidden">
