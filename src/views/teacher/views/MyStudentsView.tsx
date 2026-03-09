@@ -92,12 +92,12 @@ export const MyStudentsView = ({ theme }: MyStudentsProps) => {
           <table className="w-full text-left">
             <thead>
               <tr className="bg-ink/5">
-                <th className="px-8 py-4 text-[10px] font-black text-muted uppercase tracking-widest">Élève</th>
-                <th className="px-8 py-4 text-[10px] font-black text-muted uppercase tracking-widest">Cours inscrit</th>
-                <th className="px-8 py-4 text-[10px] font-black text-muted uppercase tracking-widest">Progression</th>
-                <th className="px-8 py-4 text-[10px] font-black text-muted uppercase tracking-widest">Date inscription</th>
-                <th className="px-8 py-4 text-[10px] font-black text-muted uppercase tracking-widest">Actions</th>
-              </tr>
+                  <th className="px-4 sm:px-8 py-4 text-[10px] font-black text-muted uppercase tracking-widest">Élève</th>
+                  <th className="px-4 sm:px-8 py-4 text-[10px] font-black text-muted uppercase tracking-widest">Cours inscrit</th>
+                  <th className="px-4 sm:px-8 py-4 text-[10px] font-black text-muted uppercase tracking-widest">Progression</th>
+                  <th className="px-4 sm:px-8 py-4 text-[10px] font-black text-muted uppercase tracking-widest">Date inscription</th>
+                  <th className="px-4 sm:px-8 py-4 text-[10px] font-black text-muted uppercase tracking-widest">Actions</th>
+                </tr>
             </thead>
             <tbody className="divide-y divide-ink/5">
               {filteredStudents.map((student) => (

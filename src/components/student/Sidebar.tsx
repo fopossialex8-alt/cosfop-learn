@@ -24,9 +24,10 @@ interface SidebarProps {
   setActiveView: (view: StudentSubView) => void;
   onLogout: () => void;
   theme?: 'light' | 'dark';
+  className?: string;
 }
 
-export const Sidebar = ({ activeView, setActiveView, onLogout, theme = 'light' }: SidebarProps) => {
+export const Sidebar = ({ activeView, setActiveView, onLogout, theme = 'light', className = '' }: SidebarProps) => {
   const menuGroups = [
     {
       label: 'Principal',
@@ -57,8 +58,11 @@ export const Sidebar = ({ activeView, setActiveView, onLogout, theme = 'light' }
     }
   ];
 
+  const base = `w-72 h-screen border-r flex flex-col sticky top-0 overflow-y-auto scrollbar-hide transition-colors duration-500`;
+  const classes = className ? `${className} ${base}` : `hidden md:flex ${base}`;
+
   return (
-    <div className={`w-72 h-screen border-r flex flex-col sticky top-0 overflow-y-auto scrollbar-hide transition-colors duration-500 ${theme === 'dark' ? 'bg-slate-900 border-white/5' : 'bg-white border-ink/5'}`}>
+    <div className={classes + ' ' + (theme === 'dark' ? 'bg-slate-900 border-white/5' : 'bg-white border-ink/5')}>
       <div className="p-8 flex items-center gap-3">
         <div className="w-10 h-10 bg-primary rounded-xl flex items-center justify-center text-white font-bold italic text-xl shadow-lg shadow-primary/20">C</div>
         <div className="flex flex-col">

@@ -24,9 +24,10 @@ interface SidebarProps {
   setActiveView: (view: TeacherSubView) => void;
   onLogout: () => void;
   theme: 'light' | 'dark';
+  className?: string;
 }
 
-export const TeacherSidebar = ({ activeView, setActiveView, onLogout, theme }: SidebarProps) => {
+export const TeacherSidebar = ({ activeView, setActiveView, onLogout, theme, className = '' }: SidebarProps) => {
   const menuItems = [
     { id: 'dashboard', label: 'Dashboard', icon: LayoutDashboard },
     { id: 'my_courses', label: 'Mes Cours', icon: BookOpen },
@@ -47,8 +48,11 @@ export const TeacherSidebar = ({ activeView, setActiveView, onLogout, theme }: S
     { id: 'settings', label: 'Paramètres', icon: Settings },
   ];
 
+  const base = `w-72 flex flex-col border-r sticky top-0 h-screen transition-colors duration-500`;
+  const classes = className ? `${className} ${base}` : `hidden md:flex ${base}`;
+
   return (
-    <aside className={`w-72 flex flex-col border-r sticky top-0 h-screen transition-colors duration-500 ${theme === 'dark' ? 'bg-slate-900 border-white/5' : 'bg-white border-ink/5'}`}>
+    <aside className={classes + ' ' + (theme === 'dark' ? 'bg-slate-900 border-white/5' : 'bg-white border-ink/5')}>
       <div className="p-8">
         <div className="flex items-center gap-3 mb-10">
           <div className="w-10 h-10 bg-primary rounded-xl flex items-center justify-center shadow-lg shadow-primary/20">

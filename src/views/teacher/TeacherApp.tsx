@@ -7,8 +7,11 @@ import {
   MessageCircle, 
   HelpCircle,
   ChevronDown,
-  Zap
+  Zap,
+  Menu,
+  X
 } from 'lucide-react';
+import { motion, AnimatePresence } from 'motion/react';
 import { MOCK_NOTIFICATIONS } from '../../data/mockData';
 
 // Sub-views (to be created)
@@ -38,6 +41,7 @@ export const TeacherApp = ({ user: initialUser, onLogout }: TeacherAppProps) => 
   const [showNotifications, setShowNotifications] = useState(false);
   const [theme, setTheme] = useState<'light' | 'dark'>('light');
   const [user, setUser] = useState(initialUser);
+  const [isMobileSidebarOpen, setIsMobileSidebarOpen] = useState(false);
 
   const unreadCount = MOCK_NOTIFICATIONS.filter(n => !n.read).length;
 
@@ -75,9 +79,43 @@ export const TeacherApp = ({ user: initialUser, onLogout }: TeacherAppProps) => 
         theme={theme}
       />
       
+      <AnimatePresence>
+        {isMobileSidebarOpen && (
+          <motion.div
+            initial={{ opacity: 0 }}
+            animate={{ opacity: 1 }}
+            exit={{ opacity: 0 }}
+            className="fixed inset-0 z-40 md:hidden"
+          >
+            <div className="absolute inset-0 bg-black/30" onClick={() => setIsMobileSidebarOpen(false)} />
+            <motion.div
+              initial={{ x: -320 }}
+              animate={{ x: 0 }}
+              exit={{ x: -320 }}
+              className="absolute left-0 top-0 bottom-0 w-80"
+              onClick={(e) => e.stopPropagation()}
+            >
+              <TeacherSidebar
+                activeView={activeSubView}
+                setActiveView={(v) => { setActiveSubView(v); setIsMobileSidebarOpen(false); }}
+                onLogout={() => { onLogout(); setIsMobileSidebarOpen(false); }}
+                theme={theme}
+                className="w-80 h-full overflow-auto"
+              />
+            </motion.div>
+          </motion.div>
+        )}
+      </AnimatePresence>
+
       <div className="flex-1 flex flex-col min-w-0 overflow-hidden">
         {/* TopBar */}
-        <header className={`h-20 border-b px-8 flex items-center justify-between sticky top-0 z-30 transition-colors duration-500 ${theme === 'dark' ? 'bg-slate-900 border-white/5' : 'bg-white border-ink/5'}`}>
+        <header className={`h-20 border-b px-4 md:px-8 flex items-center justify-between sticky top-0 z-30 transition-colors duration-500 ${theme === 'dark' ? 'bg-slate-900 border-white/5' : 'bg-white border-ink/5'}`}>
+          <div className="flex items-center gap-3 md:hidden">
+            <button onClick={() => setIsMobileSidebarOpen(!isMobileSidebarOpen)} className="p-2 rounded-lg text-muted hover:bg-primary/5">
+              {isMobileSidebarOpen ? <X className="w-5 h-5" /> : <Menu className="w-5 h-5" />}
+            </button>
+          </div>
+
           <div className="flex-1 max-w-xl relative group">
             <Search className="absolute left-4 top-1/2 -translate-y-1/2 w-5 h-5 text-muted group-focus-within:text-primary transition-colors" />
             <input 
@@ -100,7 +138,7 @@ export const TeacherApp = ({ user: initialUser, onLogout }: TeacherAppProps) => 
               </button>
 
               {showNotifications && (
-                <div className={`absolute top-full right-0 mt-4 w-80 rounded-3xl shadow-2xl border z-50 overflow-hidden transition-colors duration-500 ${theme === 'dark' ? 'bg-slate-900 border-white/5' : 'bg-white border-ink/5'}`}>
+                <div className={`absolute top-full right-0 mt-4 w-full max-w-xs sm:w-80 rounded-3xl shadow-2xl border z-50 overflow-hidden transition-colors duration-500 ${theme === 'dark' ? 'bg-slate-900 border-white/5' : 'bg-white border-ink/5'}`}>
                   <div className={`p-6 border-b flex items-center justify-between ${theme === 'dark' ? 'border-white/5' : 'border-ink/5'}`}>
                     <h4 className={`font-bold ${theme === 'dark' ? 'text-white' : 'text-ink'}`}>Notifications</h4>
                     <span className="px-2 py-1 bg-primary/10 text-primary text-[10px] font-black rounded-lg">{unreadCount} nouvelles</span>
